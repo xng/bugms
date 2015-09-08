@@ -36,5 +36,11 @@
 		<table tableName="user">
 				<generatedKey column="id" sqlStatement="MySql" identity="true" />
 		</table>		
+		<table tableName="bug">
+				<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table>	
+		<table tableName="bug_log">
+				<generatedKey column="id" sqlStatement="MySql" identity="true" />
+		</table>	
 	</context>
 </generatorConfiguration>
