@@ -13,6 +13,8 @@ public class User {
 
     private String userMail;
 
+    private Integer userStatus;
+
     private String userBak1;
 
     public Integer getId() {
@@ -61,6 +63,14 @@ public class User {
 
     public void setUserMail(String userMail) {
         this.userMail = userMail == null ? null : userMail.trim();
+    }
+
+    public Integer getUserStatus() {
+        return userStatus;
+    }
+
+    public void setUserStatus(Integer userStatus) {
+        this.userStatus = userStatus;
     }
 
     public String getUserBak1() {

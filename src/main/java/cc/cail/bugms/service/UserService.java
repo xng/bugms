@@ -1,5 +1,6 @@
 package cc.cail.bugms.service;
 
+import cc.cail.bugms.common.exception.ServiceException;
 import cc.cail.bugms.dao.entity.User;
 
 public interface UserService {
@@ -18,4 +19,6 @@ public interface UserService {
 	 * 移除user
 	 */
 	public void removeUser(Integer id);
+
+	public void updatePwd(Integer userId, String oldPwd, String newPwd) throws ServiceException;
 }

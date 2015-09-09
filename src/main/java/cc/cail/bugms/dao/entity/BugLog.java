@@ -72,4 +72,9 @@ public class BugLog {
     public void setBak1(String bak1) {
         this.bak1 = bak1 == null ? null : bak1.trim();
     }
+    
+    @Override
+    public String toString() {
+    	return "buglog : "+this.bugId+" / "+this.operation+" / "+this.opRemark;
+    }
 }

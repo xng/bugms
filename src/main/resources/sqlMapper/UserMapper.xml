@@ -8,6 +8,7 @@
     <result column="user_name" property="userName" jdbcType="VARCHAR" />
     <result column="user_role" property="userRole" jdbcType="VARCHAR" />
     <result column="user_mail" property="userMail" jdbcType="VARCHAR" />
+    <result column="user_status" property="userStatus" jdbcType="INTEGER" />
     <result column="user_bak1" property="userBak1" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -69,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, user_account, user_pwd, user_name, user_role, user_mail, user_bak1
+    id, user_account, user_pwd, user_name, user_role, user_mail, user_status, user_bak1
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cc.cail.bugms.dao.entity.UserExample" >
     select
@@ -106,11 +107,11 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into user (user_account, user_pwd, user_name, 
-      user_role, user_mail, user_bak1
-      )
+      user_role, user_mail, user_status, 
+      user_bak1)
     values (#{userAccount,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
-      #{userRole,jdbcType=VARCHAR}, #{userMail,jdbcType=VARCHAR}, #{userBak1,jdbcType=VARCHAR}
-      )
+      #{userRole,jdbcType=VARCHAR}, #{userMail,jdbcType=VARCHAR}, #{userStatus,jdbcType=INTEGER}, 
+      #{userBak1,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="cc.cail.bugms.dao.entity.User" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -133,6 +134,9 @@
       <if test="userMail != null" >
         user_mail,
       </if>
+      <if test="userStatus != null" >
+        user_status,
+      </if>
       <if test="userBak1 != null" >
         user_bak1,
       </if>
@@ -152,6 +156,9 @@
       </if>
       <if test="userMail != null" >
         #{userMail,jdbcType=VARCHAR},
+      </if>
+      <if test="userStatus != null" >
+        #{userStatus,jdbcType=INTEGER},
       </if>
       <if test="userBak1 != null" >
         #{userBak1,jdbcType=VARCHAR},
@@ -185,6 +192,9 @@
       <if test="record.userMail != null" >
         user_mail = #{record.userMail,jdbcType=VARCHAR},
       </if>
+      <if test="record.userStatus != null" >
+        user_status = #{record.userStatus,jdbcType=INTEGER},
+      </if>
       <if test="record.userBak1 != null" >
         user_bak1 = #{record.userBak1,jdbcType=VARCHAR},
       </if>
@@ -201,6 +211,7 @@
       user_name = #{record.userName,jdbcType=VARCHAR},
       user_role = #{record.userRole,jdbcType=VARCHAR},
       user_mail = #{record.userMail,jdbcType=VARCHAR},
+      user_status = #{record.userStatus,jdbcType=INTEGER},
       user_bak1 = #{record.userBak1,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -224,6 +235,9 @@
       <if test="userMail != null" >
         user_mail = #{userMail,jdbcType=VARCHAR},
       </if>
+      <if test="userStatus != null" >
+        user_status = #{userStatus,jdbcType=INTEGER},
+      </if>
       <if test="userBak1 != null" >
         user_bak1 = #{userBak1,jdbcType=VARCHAR},
       </if>
@@ -237,6 +251,7 @@
       user_name = #{userName,jdbcType=VARCHAR},
       user_role = #{userRole,jdbcType=VARCHAR},
       user_mail = #{userMail,jdbcType=VARCHAR},
+      user_status = #{userStatus,jdbcType=INTEGER},
       user_bak1 = #{userBak1,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
