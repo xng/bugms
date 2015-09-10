@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd"
+	default-lazy-init="true">
+
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="realm" ref="shiroRealm" />
+		<property name="cacheManager" ref="shiroEhcacheManager" />
+	</bean>
+
+	<!-- 自定义Realm -->
+	<bean id="shiroRealm" class="cc.cail.bugms.shiro.ShiroRealm">
+		<property name="userService" ref="userService"/>
+		 <property name="credentialsMatcher">
+            <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+               <property name="hashAlgorithmName" value="md5"/>  
+			   <property name="hashIterations" value="2"/>  
+			   <property name="storedCredentialsHexEncoded" value="true"/>
+            </bean>
+        </property>
+	</bean>
+	
+	<!-- Shiro的Web过滤器 -->
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager" />
+		<property name="loginUrl" value="/login.do" />
+		<property name="successUrl" value="/main.do" />
+		<property name="filterChainDefinitions">
+			<value>
+				/login.do = anon
+				/index.do = authc
+				/user/** = authc, roles[admin]
+			</value>
+		</property>
+	</bean>
+
+	<!-- 用户授权信息缓存管理器 使用Ehcache实现  -->
+	<bean id="shiroEhcacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+		<property name="cacheManagerConfigFile" value="classpath:ehcache-shiro.xml"/>
+	</bean>
+	
+	<!-- Shiro生命周期处理器  保证实现了Shiro内部lifecycle函数的bean执行 -->
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+	
+</beans>

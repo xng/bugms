@@ -1,0 +1,72 @@
+@charset "utf-8";
+html,
+body,
+div,
+span,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+address,
+big,
+cite,
+code,
+del,
+em,
+font,
+img,
+ins,
+small,
+strong,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend {
+	margin: 0;
+	padding: 0;
+}
+a:hover { cursor:pointer; text-decoration: none; }
+a, a:link { color:#000; cursor:pointer; text-decoration: none; -webkit-transition: .2s; transition: .2s;}
+a:visited { cursor:pointer; text-decoration: none; }
+body {
+	font-family: "\5FAE\8F6F\96C5\9ED1", "Microsoft YaHei", arial, "\5B8B\4F53";
+	color: #000000;
+}
+.yk-head {
+	padding-top: 10px;
+	height: 50px;
+}
+.yk-logo{
+	margin-left: 10px;
+}
+.yk-usermark{
+	float: right;
+	font-size: 16px;
+	margin-top: 5px;
+	margin-right: 20px;
+	color: #95B8E7;
+}
+.yk-nav{
+	width: 170px;
+}
+.cl-width-300{
+	width:300px;
+}

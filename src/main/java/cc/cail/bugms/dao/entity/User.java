@@ -1,7 +1,11 @@
 package cc.cail.bugms.dao.entity;
 
-public class User {
-    private Integer id;
+import java.io.Serializable;
+
+public class User implements Serializable{
+	private static final long serialVersionUID = -139212148792619323L;
+
+	private Integer id;
 
     private String userAccount;
 

@@ -55,4 +55,8 @@
 	</bean>
 	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+	<mvc:resources location="/WEB-INF/jsp/images/" mapping="/images/**"/>
+	<mvc:resources location="/WEB-INF/jsp/css/" mapping="/css/**"/>
+	<mvc:resources location="/WEB-INF/jsp/js/" mapping="/js/**"/>
+	<mvc:resources location="/WEB-INF/static/" mapping="/static/**"/>
 </beans>

@@ -1,16 +1,14 @@
 package cc.cail.bugms.web.controller;
 
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.ExcessiveAttemptsException;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.authc.UsernamePasswordToken;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import cc.cail.bugms.common.AjaxResult;
 import cc.cail.bugms.dao.entity.User;
@@ -22,20 +20,18 @@ public class UserController extends BaseController {
 	@Autowired
 	private UserService userService;
 
-	@RequestMapping(value = "/login.do", method = RequestMethod.GET)
-	public String login() {
-		return "login";
+	@RequestMapping(value = "/user.do", method = RequestMethod.GET)
+	public String user() {
+		return "user";
 	}
 
-	@RequestMapping(value = "/login.do", method = RequestMethod.POST)
-	public AjaxResult login(@RequestParam("user") User user, Model model) {
-		if (SecurityUtils.getSubject().isAuthenticated()) {
-			respWriter.toSuccess();
-		} else {
-			SecurityUtils.getSubject()
-					.login(new UsernamePasswordToken(user.getUserAccount(), user.getUserPwd().toCharArray(), true));
-				
-		}
-		return respWriter.toSuccess();
+	@RequestMapping(value = "/userList.do", method = RequestMethod.GET)
+	@ResponseBody
+	public AjaxResult userList() {
+		Map<String,Object> data = new HashMap<String,Object>();
+		List<User> users = userService.listUsers();
+		data.put("rows", users);
+		data.put("total", users.size());
+		return respWriter.toSuccess(data);
 	}
 }

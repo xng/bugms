@@ -9,16 +9,21 @@ import org.springframework.stereotype.Service;
 import cc.cail.bugms.common.MsConstant;
 import cc.cail.bugms.common.exception.ErrorCode;
 import cc.cail.bugms.common.exception.ServiceException;
+import cc.cail.bugms.dao.entity.Menu;
+import cc.cail.bugms.dao.entity.MenuExample;
 import cc.cail.bugms.dao.entity.User;
 import cc.cail.bugms.dao.entity.UserExample;
+import cc.cail.bugms.dao.manager.MenuMapper;
 import cc.cail.bugms.dao.manager.UserMapper;
 import cc.cail.bugms.service.UserService;
 
-@Service
+@Service("userService")
 public class UserServiceImpl implements UserService {
 	private final Logger logger = Logger.getLogger(getClass());
 	@Autowired
 	private UserMapper userMapper;
+	@Autowired
+	public MenuMapper menuMapper;
 
 	@Override
 	public User queryUserByAccount(String account) {
@@ -41,7 +46,7 @@ public class UserServiceImpl implements UserService {
 	public void removeUser(Integer id) {
 		logger.info("remove user : userId " + id);
 		User user = new User();
-		user.setUserStatus(MsConstant.USER_STATUS_DEl);
+		user.setUserStatus(MsConstant.COMMON_STATUS_DEl);
 	}
 
 	@Override
@@ -60,4 +65,15 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
+	@Override
+	public List<Menu> getMenusByRole(String role) {
+		MenuExample e = new MenuExample();
+		e.createCriteria().andMenuRoleEqualTo(role).andMenuStatusEqualTo(MsConstant.COMMON_STATUS_NORMAL);
+		return menuMapper.selectByExample(e);
+	}
+
+	@Override
+	public List<User> listUsers() {
+		return userMapper.selectByExample(new UserExample());
+	}
 }
