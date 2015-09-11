@@ -36,11 +36,6 @@ public class BugServiceImpl implements BugService {
 	}
 
 	@Override
-	public Bug queryById(Integer id) {
-		return bugMapper.selectByPrimaryKey(id);
-	}
-
-	@Override
 	public List<BugLog> queryBugLogByBugId(Integer bugId) {
 		BugLogExample e = new BugLogExample();
 		e.createCriteria().andBugIdEqualTo(bugId);
@@ -49,13 +44,17 @@ public class BugServiceImpl implements BugService {
 	}
 
 	@Override
-	public void saveBug(Bug bug) {
+	public void saveOrUpdateBug(Bug bug) {
 		Date now = new Date();
 		bug.setCreateTime(now);
 		bug.setUpdateTime(now);
-		bug.setAssignTime(now);
-		bug.setBugStatus(MsConstant.BUG_STATUS_NEW);
-		bugMapper.insert(bug);
+		if (bug.getId() == null) {
+			bug.setAssignTime(now);
+			bug.setBugStatus(MsConstant.BUG_STATUS_NEW);
+			bugMapper.insert(bug);
+		} else {
+			bugMapper.updateByPrimaryKeySelective(bug);
+		}
 	}
 
 	@Override

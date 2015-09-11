@@ -7,6 +7,7 @@ import org.apache.shiro.authc.DisabledAccountException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +21,11 @@ import cc.cail.bugms.common.exception.ErrorCode;
 import cc.cail.bugms.dao.entity.Menu;
 import cc.cail.bugms.dao.entity.User;
 import cc.cail.bugms.service.UserService;
-
+/**
+ * 
+ * @author http://cail.cc
+ *
+ */
 @Controller
 public class LoginController extends BaseController {
 
@@ -61,5 +66,16 @@ public class LoginController extends BaseController {
 		m.addAttribute("menus", menus);
 		m.addAttribute("user", user);
 		return "index";
+	}
+
+	@RequestMapping("/logout.do")
+	public String logout() {
+		Subject subject = SecurityUtils.getSubject();
+		User user = (User) subject.getPrincipal();
+		if (subject.isAuthenticated()) {
+			subject.logout();
+			logger.info(user.getUserName() + "登出");
+		}
+		return "login";
 	}
 }

@@ -81,14 +81,14 @@
 		        { field: 'userAccount', title: '登录帐号' },
 		        { field: 'userMail', title: '用户邮箱' },
 		        { field: 'action', title: '操作',formatter:function formatOper(val,row,index){  
-		            return '<a href="#" onclick="editUser('+index+')">修改</a>';  
+		            return '<a href="#" onclick="editUser('+row.id+')">修改</a>';  
 		        } }
 		    ]]
 		});
 	});
 	
 	function editUser(index){
-	    $('#dg').datagrid('selectRow',index);// 关键在这里  
+	    $('#dg').datagrid('selectRow',index);
 	    var row = $('#dg').datagrid('getSelected');  
 	    if (row){
 	    	 $('#dlg').dialog({

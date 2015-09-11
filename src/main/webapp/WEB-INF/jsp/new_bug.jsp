@@ -20,8 +20,8 @@
 	    		<tr>
 	    			<td>bug标题:</td>
 	    			<td>
-	    			<input type="hidden" name="createId" value="${createId }"/>
-	    			<input type="hidden" name="updateId" value="${createId }"/>
+	    			<input type="hidden" name="createId" value="${userId }"/>
+	    			<input type="hidden" name="updateId" value="${userId }"/>
 	    			<input class="easyui-textbox easyui-validatebox cl-width-300" type="text" name="bugTitle" data-options="prompt:'请输入标题',required:true,missingMessage:'标题必填',validType:'length[3,30]',invalidMessage:'请输入至少3个字符最多不过30个字'"></input></td>
 	    		</tr>
 	    		<tr>
@@ -64,7 +64,7 @@
 				success:function(data){
 					if(data.errorCode==200){
 						alert("成功");
-						window.location.href = "bugs.do";
+						window.location.href = "<%=request.getContextPath()%>/bug/bugs.do";
 					}else{
 						alert(data.errorMsg);
 					}

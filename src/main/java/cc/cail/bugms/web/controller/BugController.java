@@ -11,15 +11,22 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cc.cail.bugms.common.AjaxResult;
 import cc.cail.bugms.common.MsConstant;
 import cc.cail.bugms.dao.entity.Bug;
+import cc.cail.bugms.dao.entity.BugLog;
 import cc.cail.bugms.dao.entity.User;
 import cc.cail.bugms.service.BugService;
 import cc.cail.bugms.service.UserService;
 
+/**
+ * 
+ * @author http://cail.cc
+ *
+ */
 @RequestMapping("/bug")
 @Controller
 public class BugController extends BaseController {
@@ -33,7 +40,7 @@ public class BugController extends BaseController {
 		User user = (User) SecurityUtils.getSubject().getPrincipal();
 		/* 列出开发人员 */
 		List<User> devs = userService.listRoleUsers(MsConstant.ROLE_DEV);
-		m.addAttribute("createId", user.getId());
+		m.addAttribute("userId", user.getId());
 		m.addAttribute("devs", devs);
 		return "new_bug";
 	}
@@ -41,12 +48,13 @@ public class BugController extends BaseController {
 	@RequestMapping(value = "/new_bug.do", method = RequestMethod.POST)
 	@ResponseBody
 	public AjaxResult saveBug(@ModelAttribute("bug") Bug bug) {
-		bugService.saveBug(bug);
+		bugService.saveOrUpdateBug(bug);
 		return respWriter.toSuccess();
 	}
 
 	@RequestMapping(value = "/bugs.do", method = RequestMethod.GET)
-	public String bugList() {
+	public String bugList(Model m) {
+		m.addAttribute("userId", ((User) SecurityUtils.getSubject().getPrincipal()).getId());
 		return "bugs";
 	}
 
@@ -58,6 +66,21 @@ public class BugController extends BaseController {
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("rows", buglist);
 		data.put("total", buglist.size());
+		return respWriter.toSuccess(data);
+	}
+
+	/**
+	 * 按bugid获取单个bug的操作记录
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value = "/bug_log_list.do", method = RequestMethod.GET)
+	@ResponseBody
+	public AjaxResult bugLogList(@RequestParam("id") Integer id) {
+		List<BugLog> logList = bugService.queryBugLogByBugId(id);
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("logList", logList);
 		return respWriter.toSuccess(data);
 	}
 }

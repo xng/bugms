@@ -15,7 +15,9 @@
 	<body class="easyui-layout">
 		<div data-options="region:'north',border:false" class="yk-head">
 			<span class="yk-logo"><img src="images/cail.png"/></span>
-			<span class="yk-usermark">当前用户：${user.userName}</span>
+			<span class="yk-usermark">当前用户：${user.userName}
+			<a href="logout.do" onclick="return confirm('确认退出登录？')">退出登录</a></span>
+			
 		</div>
 		<div data-options="region:'west',split:true,title:'导航菜单'" class="yk-nav">
 			<div id="nav" class="easyui-accordion" fit="true" border="false">

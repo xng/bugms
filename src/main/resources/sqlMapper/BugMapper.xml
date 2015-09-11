@@ -338,13 +338,15 @@
   <select id="listTestersBug" parameterType="java.lang.Integer" resultType="map">
   SELECT
 	b.id AS id,
+	b.bug_title AS bugTitle,
 	b.create_time AS createTime,
 	u.user_name AS createName,
 	u2.user_name AS assignName,
 	b.assign_time AS assignTime,
 	b.bug_status AS bugStatus,
 	b.bug_level AS bugLevel,
-	b.bug_desc AS bugDesc
+	b.bug_desc AS bugDesc,
+	b.bug_status AS bugStatus
 FROM
 	bug b,
 	user u,
@@ -357,13 +359,15 @@ AND b.create_id = #{testId,jdbcType=INTEGER}
     <select id="listDevBug" parameterType="java.lang.Integer" resultType="map">
   SELECT
 	b.id AS id,
+	b.bug_title AS bugTitle,
 	b.create_time AS createTime,
 	u.user_name AS createName,
 	u2.user_name AS assignName,
 	b.assign_time AS assignTime,
 	b.bug_status AS bugStatus,
 	b.bug_level AS bugLevel,
-	b.bug_desc AS bugDesc
+	b.bug_desc AS bugDesc,
+	b.bug_status AS bugStatus
 FROM
 	bug b,
 	user u,

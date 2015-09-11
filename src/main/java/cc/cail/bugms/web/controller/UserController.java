@@ -15,7 +15,11 @@ import cc.cail.bugms.common.AjaxResult;
 import cc.cail.bugms.common.exception.ServiceException;
 import cc.cail.bugms.dao.entity.User;
 import cc.cail.bugms.service.UserService;
-
+/**
+ * 
+ * @author http://cail.cc
+ *
+ */
 @RequestMapping("/user")
 @Controller
 public class UserController extends BaseController {

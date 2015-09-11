@@ -19,7 +19,11 @@ import org.apache.shiro.subject.PrincipalCollection;
 import cc.cail.bugms.common.MsConstant;
 import cc.cail.bugms.dao.entity.User;
 import cc.cail.bugms.service.UserService;
-
+/**
+ * 
+ * @author http://cail.cc
+ *
+ */
 public class ShiroRealm extends AuthorizingRealm {
 	private UserService userService;
 

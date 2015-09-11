@@ -5,7 +5,11 @@ import java.util.Map;
 
 import cc.cail.bugms.dao.entity.Bug;
 import cc.cail.bugms.dao.entity.BugLog;
-
+/**
+ * 
+ * @author http://cail.cc
+ *
+ */
 public interface BugService {
 	/**
 	 * 根据测试人员id获取当前人提交的Bug列表
@@ -24,14 +28,6 @@ public interface BugService {
 	public List<Map<String, Object>> queryBugsByDeveloperId(Integer developerId);
 
 	/**
-	 * 根据id查看bug
-	 * 
-	 * @param id
-	 * @return
-	 */
-	public Bug queryById(Integer id);
-
-	/**
 	 * 根据bugId获取BugLog
 	 * 
 	 * @param bugId
@@ -44,7 +40,7 @@ public interface BugService {
 	 * 
 	 * @param bug
 	 */
-	public void saveBug(Bug bug);
+	public void saveOrUpdateBug(Bug bug);
 
 	/**
 	 * 更新bug
