@@ -1,6 +1,7 @@
 package cc.cail.bugms.service;
 
 import java.util.List;
+import java.util.Map;
 
 import cc.cail.bugms.dao.entity.Bug;
 import cc.cail.bugms.dao.entity.BugLog;
@@ -12,7 +13,7 @@ public interface BugService {
 	 * @param testerId
 	 * @return
 	 */
-	public List<Bug> queryBugsByTesterId(Integer testerId);
+	public List<Map<String, Object>> queryBugsByTesterId(Integer testerId);
 
 	/**
 	 * 根据开发人员id获取指派给当前人的Bug列表
@@ -20,7 +21,7 @@ public interface BugService {
 	 * @param developerId
 	 * @return
 	 */
-	public List<Bug> queryBugsByDeveloperId(Integer developerId);
+	public List<Map<String, Object>> queryBugsByDeveloperId(Integer developerId);
 
 	/**
 	 * 根据id查看bug

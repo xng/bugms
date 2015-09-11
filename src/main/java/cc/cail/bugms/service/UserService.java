@@ -20,8 +20,10 @@ public interface UserService {
 
 	/**
 	 * 保存或者更新用户
+	 * 
+	 * @throws ServiceException
 	 */
-	public void saveOrUpdateUser(User user);
+	public void saveOrUpdateUser(User user) throws ServiceException;
 
 	/**
 	 * 移除user
@@ -38,5 +40,15 @@ public interface UserService {
 	 */
 	public List<Menu> getMenusByRole(String role);
 
+	/**
+	 * 罗列所有用户
+	 * 
+	 * @return
+	 */
 	public List<User> listUsers();
+
+	/**
+	 * 按角色罗列人
+	 */
+	public List<User> listRoleUsers(String role);
 }

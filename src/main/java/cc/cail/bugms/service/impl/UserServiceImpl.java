@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import cc.cail.bugms.common.MsConstant;
 import cc.cail.bugms.common.exception.ErrorCode;
 import cc.cail.bugms.common.exception.ServiceException;
+import cc.cail.bugms.common.util.PwdUtil;
 import cc.cail.bugms.dao.entity.Menu;
 import cc.cail.bugms.dao.entity.MenuExample;
 import cc.cail.bugms.dao.entity.User;
@@ -34,10 +35,15 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void saveOrUpdateUser(User user) {
+	public void saveOrUpdateUser(User user) throws ServiceException {
 		if (user.getId() != null) {
 			userMapper.updateByPrimaryKeySelective(user);
 		} else {
+			if (queryUserByAccount(user.getUserAccount()) != null) {
+				throw new ServiceException(ErrorCode.USER_ACCOUNT_REPEAT);
+			}
+			user.setUserPwd(PwdUtil.getSign(MsConstant.DEFAULT_PWD));
+			user.setUserStatus(MsConstant.COMMON_STATUS_NORMAL);
 			userMapper.insert(user);
 		}
 	}
@@ -75,5 +81,12 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<User> listUsers() {
 		return userMapper.selectByExample(new UserExample());
+	}
+
+	@Override
+	public List<User> listRoleUsers(String role) {
+		UserExample e = new UserExample();
+		e.createCriteria().andUserRoleEqualTo(role).andUserStatusEqualTo(MsConstant.COMMON_STATUS_NORMAL);
+		return userMapper.selectByExample(e);
 	}
 }

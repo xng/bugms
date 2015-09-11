@@ -2,13 +2,14 @@ package cc.cail.bugms.service.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cc.cail.bugms.common.MsConstant;
 import cc.cail.bugms.dao.entity.Bug;
-import cc.cail.bugms.dao.entity.BugExample;
 import cc.cail.bugms.dao.entity.BugLog;
 import cc.cail.bugms.dao.entity.BugLogExample;
 import cc.cail.bugms.dao.manager.BugLogMapper;
@@ -25,17 +26,13 @@ public class BugServiceImpl implements BugService {
 	private BugLogMapper bugLogMapper;
 
 	@Override
-	public List<Bug> queryBugsByTesterId(Integer testerId) {
-		BugExample e = new BugExample();
-		e.createCriteria().andCreateIdEqualTo(testerId);
-		return bugMapper.selectByExample(e);
+	public List<Map<String, Object>> queryBugsByTesterId(Integer testerId) {
+		return bugMapper.listTestersBug(testerId);
 	}
 
 	@Override
-	public List<Bug> queryBugsByDeveloperId(Integer developerId) {
-		BugExample e = new BugExample();
-		e.createCriteria().andAssignIdEqualTo(developerId);
-		return bugMapper.selectByExample(e);
+	public List<Map<String, Object>> queryBugsByDeveloperId(Integer developerId) {
+		return bugMapper.listTestersBug(developerId);
 	}
 
 	@Override
@@ -53,12 +50,17 @@ public class BugServiceImpl implements BugService {
 
 	@Override
 	public void saveBug(Bug bug) {
+		Date now = new Date();
+		bug.setCreateTime(now);
+		bug.setUpdateTime(now);
+		bug.setAssignTime(now);
+		bug.setBugStatus(MsConstant.BUG_STATUS_NEW);
 		bugMapper.insert(bug);
 	}
 
 	@Override
 	public void updateBug(Bug bug, BugLog bugLog) {
-		logger.info("update log action "+bugLog.toString());
+		logger.info("update log action " + bugLog.toString());
 		bugMapper.updateByPrimaryKeySelective(bug);
 		bugLog.setUpdateTime(new Date());
 		bugLogMapper.insert(bugLog);

@@ -21,6 +21,8 @@ public class Bug {
 
     private Date assignTime;
 
+    private Integer bugStatus;
+
     private String bak1;
 
     private String bak2;
@@ -97,6 +99,14 @@ public class Bug {
 
     public void setAssignTime(Date assignTime) {
         this.assignTime = assignTime;
+    }
+
+    public Integer getBugStatus() {
+        return bugStatus;
+    }
+
+    public void setBugStatus(Integer bugStatus) {
+        this.bugStatus = bugStatus;
     }
 
     public String getBak1() {

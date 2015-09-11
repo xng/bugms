@@ -1,0 +1,63 @@
+package cc.cail.bugms.web.controller;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.shiro.SecurityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import cc.cail.bugms.common.AjaxResult;
+import cc.cail.bugms.common.MsConstant;
+import cc.cail.bugms.dao.entity.Bug;
+import cc.cail.bugms.dao.entity.User;
+import cc.cail.bugms.service.BugService;
+import cc.cail.bugms.service.UserService;
+
+@RequestMapping("/bug")
+@Controller
+public class BugController extends BaseController {
+	@Autowired
+	private UserService userService;
+	@Autowired
+	private BugService bugService;
+
+	@RequestMapping(value = "/new_bug.do", method = RequestMethod.GET)
+	public String newBug(Model m) {
+		User user = (User) SecurityUtils.getSubject().getPrincipal();
+		/* 列出开发人员 */
+		List<User> devs = userService.listRoleUsers(MsConstant.ROLE_DEV);
+		m.addAttribute("createId", user.getId());
+		m.addAttribute("devs", devs);
+		return "new_bug";
+	}
+
+	@RequestMapping(value = "/new_bug.do", method = RequestMethod.POST)
+	@ResponseBody
+	public AjaxResult saveBug(@ModelAttribute("bug") Bug bug) {
+		bugService.saveBug(bug);
+		return respWriter.toSuccess();
+	}
+
+	@RequestMapping(value = "/bugs.do", method = RequestMethod.GET)
+	public String bugList() {
+		return "bugs";
+	}
+
+	@RequestMapping(value = "/bug_list.do", method = RequestMethod.GET)
+	@ResponseBody
+	public AjaxResult bugListJson() {
+		User user = (User) SecurityUtils.getSubject().getPrincipal();
+		List<Map<String, Object>> buglist = bugService.queryBugsByTesterId(user.getId());
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("rows", buglist);
+		data.put("total", buglist.size());
+		return respWriter.toSuccess(data);
+	}
+}

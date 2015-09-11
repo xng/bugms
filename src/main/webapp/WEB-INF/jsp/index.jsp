@@ -19,8 +19,7 @@
 		</div>
 		<div data-options="region:'west',split:true,title:'导航菜单'" class="yk-nav">
 			<div id="nav" class="easyui-accordion" fit="true" border="false">
-				
-					<ul  class="easyui-tree">
+					<ul class="easyui-tree">
 					<c:forEach items="${menus}" var="menu" varStatus="status">
 						<li>
 							<a href="#" onclick="addTab('${menu.menuName}','${menu.menuUrl}')">${menu.menuName}</a>
@@ -33,8 +32,5 @@
 			<div id="tabs" class="easyui-tabs" fit="true" border="false">
 			</div>
 		</div>
-		
-	</div>
 	</body>
-
 </html>

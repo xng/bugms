@@ -10,12 +10,13 @@
 <script src="<%=request.getContextPath()%>/js/easyui/jquery.min.js" type="text/javascript"></script>
 <script src="<%=request.getContextPath()%>/js/easyui/jquery.easyui.min.js" type="text/javascript"></script>
 <script src="<%=request.getContextPath()%>/js/easyui/locale/easyui-lang-zh_CN.js" type="text/javascript"></script>
+		<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.form.js" ></script>
 </head>
 <body>
 	<table id="dg" title="用户信息" class="easyui-datagrid"></table>
 	<div id="dlg" class="easyui-dialog" title="修改用户信息" 
-	 style="width:400px;height:200px;padding:10px"  data-options="iconCls:'icon-save',resizable:true,closed:true,modal:true">
-		<form id="fm"  class="easyui-form" data-options="novalidate:true">
+	 style="width:300px;height:300px;padding:10px"  data-options="resizable:true,closed:true,modal:true">
+		<form id="ff"  class="easyui-form" data-options="novalidate:true">
         <table cellpadding="5">
        		<tr>
 				<td>帐号:</td>
@@ -33,7 +34,18 @@
 			<tr>
 				<td>角色:</td>
 				<td>
-				<input class="easyui-validatebox easyui-textbox" type="text"  name="userRole" data-options="required:true,missingMessage:'密码必填'"/>
+				<select class="easyui-combobox" name="userRole" data-options="required:true, editable:false ">
+					<option value="admin">管理员</option>
+					<option value="tester">测试人员</option>
+					<option value="dev">开发人员</option>
+					<option value="man">经理</option>
+				</select>
+				</td>
+			</tr>
+			<tr>
+				<td>邮箱:</td>
+				<td>
+				<input class="easyui-validatebox easyui-textbox" type="text"  name="userMail" data-options="required:true,validType:'email',missingMessage:'邮箱必填'"/>
 				</td>
 			</tr>
 			<tr>
@@ -54,7 +66,7 @@
 		    singleSelect:true,
 		    striped:true,
 		    pagination: true,
-		    nowrap: false,
+		    toolbar:toolbar,
 		    pageSize: 10,
 		    pageList: [10, 20, 50, 100, 150, 200],
 		    loadFilter:function(data){
@@ -65,7 +77,7 @@
 		    columns: [[
 				{ field: 'id', title: 'ID' },
 		        { field: 'userName', title: '姓名' },
-		        { field: 'userRole', title: '角色',editor:'text',sortable:true },
+		        { field: 'userRole', title: '角色',sortable:true },
 		        { field: 'userAccount', title: '登录帐号' },
 		        { field: 'userMail', title: '用户邮箱' },
 		        { field: 'action', title: '操作',formatter:function formatOper(val,row,index){  
@@ -79,12 +91,43 @@
 	    $('#dg').datagrid('selectRow',index);// 关键在这里  
 	    var row = $('#dg').datagrid('getSelected');  
 	    if (row){
-	    	console.log(row)
-	        $('#dlg').dialog('open');  
-	    	console.log( $('#fm'))
-	        $('#fm').form('load',row);  
+	    	 $('#dlg').dialog({
+		        	iconCls:'icon-edit',
+		        	title:'修改用户'
+		        }).dialog('open');
+	        $('#ff').form('load',row);  
 	    }  
 	} 
+	function submitForm(){
+		$("#ff").ajaxSubmit({
+				url:'saveorUpdateUser.do',
+				type:'post',
+				dataType:'json',
+				beforeSubmit:function(){
+					return $("#ff").form('enableValidation').form('validate');
+				},
+				success:function(data){
+					if(data.errorCode==200){
+				        $('#dlg').dialog('close'); 
+							alert('成功');
+						 $('#dg').datagrid('reload');
+					}else{
+						alert(data.errorMsg);
+					}
+				}
+		});
+	}
+	var toolbar = [{
+		text:'新用户',
+		iconCls:'icon-add',
+		handler:function(){
+			$('#ff').form('clear');
+	        $('#dlg').dialog({
+	        	iconCls:'icon-add',
+	        	title:'新增用户(默认密码六个1)'
+	        }).dialog('open');  
+		}
+	}];
 	</script>
 </body>
 </html>

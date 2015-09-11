@@ -655,6 +655,66 @@ public class BugExample {
             return (Criteria) this;
         }
 
+        public Criteria andBugStatusIsNull() {
+            addCriterion("bug_status is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBugStatusIsNotNull() {
+            addCriterion("bug_status is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBugStatusEqualTo(Integer value) {
+            addCriterion("bug_status =", value, "bugStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andBugStatusNotEqualTo(Integer value) {
+            addCriterion("bug_status <>", value, "bugStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andBugStatusGreaterThan(Integer value) {
+            addCriterion("bug_status >", value, "bugStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andBugStatusGreaterThanOrEqualTo(Integer value) {
+            addCriterion("bug_status >=", value, "bugStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andBugStatusLessThan(Integer value) {
+            addCriterion("bug_status <", value, "bugStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andBugStatusLessThanOrEqualTo(Integer value) {
+            addCriterion("bug_status <=", value, "bugStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andBugStatusIn(List<Integer> values) {
+            addCriterion("bug_status in", values, "bugStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andBugStatusNotIn(List<Integer> values) {
+            addCriterion("bug_status not in", values, "bugStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andBugStatusBetween(Integer value1, Integer value2) {
+            addCriterion("bug_status between", value1, value2, "bugStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andBugStatusNotBetween(Integer value1, Integer value2) {
+            addCriterion("bug_status not between", value1, value2, "bugStatus");
+            return (Criteria) this;
+        }
+
         public Criteria andBak1IsNull() {
             addCriterion("bak1 is null");
             return (Criteria) this;

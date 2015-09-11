@@ -3,7 +3,7 @@ package cc.cail.bugms.common.util;
 import org.apache.shiro.crypto.hash.SimpleHash;
 
 public class PwdUtil {
-	static String getSign(String pass){
+	public static String getSign(String pass){
         return  new SimpleHash("md5",pass,null,2).toHex();
     }
     
