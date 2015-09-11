@@ -15,6 +15,8 @@ public class Bug {
 
     private String bugTitle;
 
+    private String bugDesc;
+
     private Integer bugLevel;
 
     private Integer assignId;
@@ -26,8 +28,6 @@ public class Bug {
     private String bak1;
 
     private String bak2;
-
-    private String bugDesc;
 
     public Integer getId() {
         return id;
@@ -77,6 +77,14 @@ public class Bug {
         this.bugTitle = bugTitle == null ? null : bugTitle.trim();
     }
 
+    public String getBugDesc() {
+        return bugDesc;
+    }
+
+    public void setBugDesc(String bugDesc) {
+        this.bugDesc = bugDesc == null ? null : bugDesc.trim();
+    }
+
     public Integer getBugLevel() {
         return bugLevel;
     }
@@ -123,13 +131,5 @@ public class Bug {
 
     public void setBak2(String bak2) {
         this.bak2 = bak2 == null ? null : bak2.trim();
-    }
-
-    public String getBugDesc() {
-        return bugDesc;
-    }
-
-    public void setBugDesc(String bugDesc) {
-        this.bugDesc = bugDesc == null ? null : bugDesc.trim();
     }
 }

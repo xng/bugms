@@ -475,6 +475,76 @@ public class BugExample {
             return (Criteria) this;
         }
 
+        public Criteria andBugDescIsNull() {
+            addCriterion("bug_desc is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBugDescIsNotNull() {
+            addCriterion("bug_desc is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBugDescEqualTo(String value) {
+            addCriterion("bug_desc =", value, "bugDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andBugDescNotEqualTo(String value) {
+            addCriterion("bug_desc <>", value, "bugDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andBugDescGreaterThan(String value) {
+            addCriterion("bug_desc >", value, "bugDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andBugDescGreaterThanOrEqualTo(String value) {
+            addCriterion("bug_desc >=", value, "bugDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andBugDescLessThan(String value) {
+            addCriterion("bug_desc <", value, "bugDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andBugDescLessThanOrEqualTo(String value) {
+            addCriterion("bug_desc <=", value, "bugDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andBugDescLike(String value) {
+            addCriterion("bug_desc like", value, "bugDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andBugDescNotLike(String value) {
+            addCriterion("bug_desc not like", value, "bugDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andBugDescIn(List<String> values) {
+            addCriterion("bug_desc in", values, "bugDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andBugDescNotIn(List<String> values) {
+            addCriterion("bug_desc not in", values, "bugDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andBugDescBetween(String value1, String value2) {
+            addCriterion("bug_desc between", value1, value2, "bugDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andBugDescNotBetween(String value1, String value2) {
+            addCriterion("bug_desc not between", value1, value2, "bugDesc");
+            return (Criteria) this;
+        }
+
         public Criteria andBugLevelIsNull() {
             addCriterion("bug_level is null");
             return (Criteria) this;

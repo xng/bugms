@@ -18,26 +18,19 @@ public interface BugMapper {
 
 	int insertSelective(Bug record);
 
-	List<Bug> selectByExampleWithBLOBs(BugExample example);
-
 	List<Bug> selectByExample(BugExample example);
 
 	Bug selectByPrimaryKey(Integer id);
 
 	int updateByExampleSelective(@Param("record") Bug record, @Param("example") BugExample example);
 
-	int updateByExampleWithBLOBs(@Param("record") Bug record, @Param("example") BugExample example);
-
 	int updateByExample(@Param("record") Bug record, @Param("example") BugExample example);
 
 	int updateByPrimaryKeySelective(Bug record);
-
-	int updateByPrimaryKeyWithBLOBs(Bug record);
 
 	int updateByPrimaryKey(Bug record);
 
 	List<Map<String, Object>> listTestersBug(Integer testId);
 
 	List<Map<String, Object>> listDevBug(Integer devId);
-
 }

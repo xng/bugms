@@ -8,15 +8,13 @@
     <result column="update_id" property="updateId" jdbcType="INTEGER" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="bug_title" property="bugTitle" jdbcType="VARCHAR" />
+    <result column="bug_desc" property="bugDesc" jdbcType="VARCHAR" />
     <result column="bug_level" property="bugLevel" jdbcType="INTEGER" />
     <result column="assign_id" property="assignId" jdbcType="INTEGER" />
     <result column="assign_time" property="assignTime" jdbcType="TIMESTAMP" />
     <result column="bug_status" property="bugStatus" jdbcType="INTEGER" />
     <result column="bak1" property="bak1" jdbcType="VARCHAR" />
     <result column="bak2" property="bak2" jdbcType="VARCHAR" />
-  </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="cc.cail.bugms.dao.entity.Bug" extends="BaseResultMap" >
-    <result column="bug_desc" property="bugDesc" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -77,28 +75,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, create_id, create_time, update_id, update_time, bug_title, bug_level, assign_id, 
-    assign_time, bug_status, bak1, bak2
+    id, create_id, create_time, update_id, update_time, bug_title, bug_desc, bug_level, 
+    assign_id, assign_time, bug_status, bak1, bak2
   </sql>
-  <sql id="Blob_Column_List" >
-    bug_desc
-  </sql>
-  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="cc.cail.bugms.dao.entity.BugExample" >
-    select
-    <if test="distinct" >
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from bug
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null" >
-      order by ${orderByClause}
-    </if>
-  </select>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cc.cail.bugms.dao.entity.BugExample" >
     select
     <if test="distinct" >
@@ -113,11 +92,9 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
     from bug
     where id = #{id,jdbcType=INTEGER}
   </select>
@@ -136,14 +113,14 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into bug (create_id, create_time, update_id, 
-      update_time, bug_title, bug_level, 
-      assign_id, assign_time, bug_status, 
-      bak1, bak2, bug_desc
+      update_time, bug_title, bug_desc, 
+      bug_level, assign_id, assign_time, 
+      bug_status, bak1, bak2
       )
     values (#{createId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateId,jdbcType=INTEGER}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{bugTitle,jdbcType=VARCHAR}, #{bugLevel,jdbcType=INTEGER}, 
-      #{assignId,jdbcType=INTEGER}, #{assignTime,jdbcType=TIMESTAMP}, #{bugStatus,jdbcType=INTEGER}, 
-      #{bak1,jdbcType=VARCHAR}, #{bak2,jdbcType=VARCHAR}, #{bugDesc,jdbcType=LONGVARCHAR}
+      #{updateTime,jdbcType=TIMESTAMP}, #{bugTitle,jdbcType=VARCHAR}, #{bugDesc,jdbcType=VARCHAR}, 
+      #{bugLevel,jdbcType=INTEGER}, #{assignId,jdbcType=INTEGER}, #{assignTime,jdbcType=TIMESTAMP}, 
+      #{bugStatus,jdbcType=INTEGER}, #{bak1,jdbcType=VARCHAR}, #{bak2,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="cc.cail.bugms.dao.entity.Bug" >
@@ -167,6 +144,9 @@
       <if test="bugTitle != null" >
         bug_title,
       </if>
+      <if test="bugDesc != null" >
+        bug_desc,
+      </if>
       <if test="bugLevel != null" >
         bug_level,
       </if>
@@ -185,9 +165,6 @@
       <if test="bak2 != null" >
         bak2,
       </if>
-      <if test="bugDesc != null" >
-        bug_desc,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="createId != null" >
@@ -204,6 +181,9 @@
       </if>
       <if test="bugTitle != null" >
         #{bugTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="bugDesc != null" >
+        #{bugDesc,jdbcType=VARCHAR},
       </if>
       <if test="bugLevel != null" >
         #{bugLevel,jdbcType=INTEGER},
@@ -222,9 +202,6 @@
       </if>
       <if test="bak2 != null" >
         #{bak2,jdbcType=VARCHAR},
-      </if>
-      <if test="bugDesc != null" >
-        #{bugDesc,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
@@ -255,6 +232,9 @@
       <if test="record.bugTitle != null" >
         bug_title = #{record.bugTitle,jdbcType=VARCHAR},
       </if>
+      <if test="record.bugDesc != null" >
+        bug_desc = #{record.bugDesc,jdbcType=VARCHAR},
+      </if>
       <if test="record.bugLevel != null" >
         bug_level = #{record.bugLevel,jdbcType=INTEGER},
       </if>
@@ -273,29 +253,7 @@
       <if test="record.bak2 != null" >
         bak2 = #{record.bak2,jdbcType=VARCHAR},
       </if>
-      <if test="record.bugDesc != null" >
-        bug_desc = #{record.bugDesc,jdbcType=LONGVARCHAR},
-      </if>
     </set>
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExampleWithBLOBs" parameterType="map" >
-    update bug
-    set id = #{record.id,jdbcType=INTEGER},
-      create_id = #{record.createId,jdbcType=INTEGER},
-      create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      update_id = #{record.updateId,jdbcType=INTEGER},
-      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
-      bug_title = #{record.bugTitle,jdbcType=VARCHAR},
-      bug_level = #{record.bugLevel,jdbcType=INTEGER},
-      assign_id = #{record.assignId,jdbcType=INTEGER},
-      assign_time = #{record.assignTime,jdbcType=TIMESTAMP},
-      bug_status = #{record.bugStatus,jdbcType=INTEGER},
-      bak1 = #{record.bak1,jdbcType=VARCHAR},
-      bak2 = #{record.bak2,jdbcType=VARCHAR},
-      bug_desc = #{record.bugDesc,jdbcType=LONGVARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -308,6 +266,7 @@
       update_id = #{record.updateId,jdbcType=INTEGER},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       bug_title = #{record.bugTitle,jdbcType=VARCHAR},
+      bug_desc = #{record.bugDesc,jdbcType=VARCHAR},
       bug_level = #{record.bugLevel,jdbcType=INTEGER},
       assign_id = #{record.assignId,jdbcType=INTEGER},
       assign_time = #{record.assignTime,jdbcType=TIMESTAMP},
@@ -336,6 +295,9 @@
       <if test="bugTitle != null" >
         bug_title = #{bugTitle,jdbcType=VARCHAR},
       </if>
+      <if test="bugDesc != null" >
+        bug_desc = #{bugDesc,jdbcType=VARCHAR},
+      </if>
       <if test="bugLevel != null" >
         bug_level = #{bugLevel,jdbcType=INTEGER},
       </if>
@@ -354,26 +316,7 @@
       <if test="bak2 != null" >
         bak2 = #{bak2,jdbcType=VARCHAR},
       </if>
-      <if test="bugDesc != null" >
-        bug_desc = #{bugDesc,jdbcType=LONGVARCHAR},
-      </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cc.cail.bugms.dao.entity.Bug" >
-    update bug
-    set create_id = #{createId,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_id = #{updateId,jdbcType=INTEGER},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      bug_title = #{bugTitle,jdbcType=VARCHAR},
-      bug_level = #{bugLevel,jdbcType=INTEGER},
-      assign_id = #{assignId,jdbcType=INTEGER},
-      assign_time = #{assignTime,jdbcType=TIMESTAMP},
-      bug_status = #{bugStatus,jdbcType=INTEGER},
-      bak1 = #{bak1,jdbcType=VARCHAR},
-      bak2 = #{bak2,jdbcType=VARCHAR},
-      bug_desc = #{bugDesc,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="cc.cail.bugms.dao.entity.Bug" >
@@ -383,6 +326,7 @@
       update_id = #{updateId,jdbcType=INTEGER},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       bug_title = #{bugTitle,jdbcType=VARCHAR},
+      bug_desc = #{bugDesc,jdbcType=VARCHAR},
       bug_level = #{bugLevel,jdbcType=INTEGER},
       assign_id = #{assignId,jdbcType=INTEGER},
       assign_time = #{assignTime,jdbcType=TIMESTAMP},
