@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -55,11 +57,7 @@ public class BugController extends BaseController {
 
 	@RequestMapping(value = "/bugs.do", method = RequestMethod.GET)
 	public String bugList(Model m) {
-		User user = (User) SecurityUtils.getSubject().getPrincipal();
 		m.addAttribute("userId", ((User) SecurityUtils.getSubject().getPrincipal()).getId());
-		/* 列出开发人员 */
-		List<User> devs = userService.listRoleUsers(MsConstant.ROLE_DEV);
-		m.addAttribute("devs", devs);
 		return "bugs";
 	}
 

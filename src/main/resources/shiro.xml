@@ -24,16 +24,22 @@
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<property name="securityManager" ref="securityManager" />
 		<property name="loginUrl" value="/login.do" />
-		<property name="successUrl" value="/main.do" />
+		 <property name="filters">  
+            <map>  
+                <entry key="anyRoles" value-ref="anyRoles"/>  
+            </map>  
+        </property>
 		<property name="filterChainDefinitions">
 			<value>
 				/login.do = anon
 				/index.do = authc
 				/user/** = authc, roles[admin]
+				/bug/** = authc, anyRoles[dev,tester,man]
 			</value>
 		</property>
 	</bean>
-
+<!--自定义的Roles Filter-->  
+    <bean id="anyRoles" class="cc.cail.bugms.shiro.RolesAuthorizationFilter" /> 
 	<!-- 用户授权信息缓存管理器 使用Ehcache实现  -->
 	<bean id="shiroEhcacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
 		<property name="cacheManagerConfigFile" value="classpath:ehcache-shiro.xml"/>
