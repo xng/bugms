@@ -4,7 +4,7 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<title>bug列表 | www.cail.cc</title>
+		<title>bug统计 | www.cail.cc</title>
 		<link rel="stylesheet" href="<%=request.getContextPath()%>/css/newmain.css" />
 		<link rel="stylesheet" href="<%=request.getContextPath()%>/js/easyui/themes/default/easyui.css" />
 		<script src="<%=request.getContextPath()%>/js/easyui/jquery.min.js" type="text/javascript"></script>
@@ -49,69 +49,6 @@
 				</tr> -->
 	    	</table>
 	</div>
-	<div id="dlg" class="easyui-dialog" title="处理bug" 
-	 style="width:500px;height:500px;padding:10px"  data-options="resizable:true,closed:true,modal:true">
-	 	<form id="ff" class="easyui-form" method="post" data-options="novalidate:true">
-	    	<table cellpadding="5">
-	    		<tr>
-	    			<td>bug标题:</td>
-	    			<td>
-	    			<input class="easyui-textbox  cl-width-300" type="text" name="bugTitle" data-options="disabled:true"></input></td>
-	    		</tr>
-	    		<tr>
-	    			<td>bug描述:</td>
-	    			<td>
-					<textarea rows=5 name="bugDesc" class=" cl-width-300" disabled></textarea>
-					</td>
-	    		</tr>
-	    		<tr>
-	    			<td>严重程度:</td>
-	    			<td><select class="easyui-combobox" data-options="editable:false,disabled:true" id="creater" name="bugLevel">
-						<option value="1">一般</option>
-						<option value="2">紧急</option>
-						<option value="3">火急</option>
-					</select></td>
-	    		</tr>
-	    		<tr>
-	    			<td>指派给:</td>
-	    			<td><input class="easyui-textbox" data-options="disabled:true"  name="assignName" /></td>
-	    		</tr>
-	    		<tr>
-	    			<td>处理过程:</td>
-	    			<td>
-	    				<ul class="bugLogs">
-	    					
-	    				</ul>
-	    			</td>
-	    		</tr>
-	    		<tr>
-	    			<td>备注：</td>
-	    			<td>
-	    			<input type="hidden" name="bugId" id="bugId"/>
-	    			<input type="hidden" name="updateId" value="${userId }"/>
-	    			<textarea rows=3 name="opRemark" class="cl-width-300"></textarea><br>
-	    			<shiro:hasRole name="tester">
-	    			<select class="easyui-combobox" data-options="editable:false" name="operation">
-	    				<option value="未解决">未解决</option>
-	    				<option value="关闭">关闭</option>
-	    			</select>
-    					 <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">提交</a>
-    				</shiro:hasRole>
-    				<shiro:hasRole name="dev">
-	    			<select class="easyui-combobox" data-options="editable:false"  name="operation">
-	    				<option value="不予处理">不予处理</option>
-	    				<option value="已修正">已修正</option>
-	    			</select>
-    					 <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">提交</a>
-    				</shiro:hasRole>
-	    			</td>
-	    		</tr>
-				<!-- <tr>
-					<td colspan="2"><a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">提交</a></td>
-				</tr> -->
-	    	</table>
-	    </form>
-	</div>
 	<script type="text/javascript">
 	Date.prototype.format = function (format) {  
 	    var o = {  
@@ -148,7 +85,7 @@
     	}
     
 		$('#dg').datagrid({
-		    url: '<%=request.getContextPath()%>/bug/bug_list.do',
+		    url: '<%=request.getContextPath()%>/bug/bug_count_json.do',
 		    method: 'get',
 		    idField: 'id',
 		    fitColumns:true,
@@ -192,30 +129,12 @@
 		           }
 		        },sortable:true  },
 		        { field: 'action', title: '操作',formatter:function formatOper(val,row,index){  
-		        	
 		        	var result = ' <a href="#" onclick="seeBug('+index+')">查看</a> ';
-		        	if((row.bugStatus==0&&row.assignId=='${userId}')
-		        			||row.bugStatus==1&&row.assignId!='${userId}'){
-		        		result +=' | <a href="#" onclick="editBug('+index+')">处理</a> ';
-		        	}
 		            return result;
 		        }  }
 		    ]]
 		});
 		
-		function editBug(index){
-		    $('#dg').datagrid('selectRow',index);
-		    var row = $('#dg').datagrid('getSelected');  
-		    if (row){
-		    	 $('#dlg').dialog({
-			        	iconCls:'icon-edit',
-			        	title:'查看Bug'
-			        }).dialog('open');
-		        $('#ff').form('load',row); 
-		        $("#bugId").val(row.id);
-		        seeBugLog(row.id);
-		    }  
-		}
 		
 		function seeBugLog(id){
 			 $.ajax({ 
@@ -254,25 +173,6 @@
 		    }  
 		}
 		
-		function submitForm(){
-			$("#ff").ajaxSubmit({
-				url:'op_bug.do',
-				type:'post',
-				dataType:'json',
-				beforeSubmit:function(){
-					return $("#ff").form('enableValidation').form('validate');
-				},
-				success:function(data){
-					if(data.errorCode==200){
-						$('#dlg').dialog('close');
-						alert("成功");
-						 $('#dg').datagrid('reload');
-					}else{
-						alert(data.errorMsg);
-					}
-				}
-		});
-		}
 	</script>
 	</body>
 

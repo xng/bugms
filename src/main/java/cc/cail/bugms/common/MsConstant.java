@@ -8,7 +8,7 @@ public class MsConstant {
 	public static final String ROLE_TEST = "tester";
 	public static final String ROLE_DEV = "dev";
 
-	public static final int BUG_STATUS_NEW = 0;//新建
-	public static final int BUG_STATUS_DEAL = 1;//开发已处理
+	public static final int BUG_STATUS_NEW = 0;//新建待开发处理
+	public static final int BUG_STATUS_DEAL = 1;//待测试处理
 	public static final int BUG_STATUS_CLOSE = 2;//已关闭
 }

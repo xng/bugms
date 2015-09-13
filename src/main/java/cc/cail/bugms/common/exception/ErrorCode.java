@@ -6,7 +6,8 @@ public enum ErrorCode {
 	ERROR_OLD_PASS_ERROR(1002, "旧密码错误"),
 	ERROR_PASS_ERROR(1003, "密码错误"),
 	ERROR_DISABLE_USER(1004, "帐号已不可用"),
-	USER_ACCOUNT_REPEAT(1005,"帐号重复");
+	USER_ACCOUNT_REPEAT(1005,"帐号重复"),
+	BUG_NULL_ERRPR(1006,"未找到相关bug");
 
 	private Integer code;
 	private String msg;

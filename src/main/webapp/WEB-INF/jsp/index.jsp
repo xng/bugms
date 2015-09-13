@@ -4,7 +4,7 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<title>bugms | cail.cc</title>
+		<title>BugMS | www.cail.cc</title>
 		<link rel="stylesheet" href="css/newmain.css" />
 		<link rel="stylesheet" href="js/easyui/themes/default/easyui.css" />
 		<script src="js/easyui/jquery.min.js" type="text/javascript"></script>

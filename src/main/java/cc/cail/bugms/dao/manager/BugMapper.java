@@ -33,4 +33,5 @@ public interface BugMapper {
 	List<Map<String, Object>> listTestersBug(Integer testId);
 
 	List<Map<String, Object>> listDevBug(Integer devId);
+	List<Map<String, Object>> queryAllBugs();
 }

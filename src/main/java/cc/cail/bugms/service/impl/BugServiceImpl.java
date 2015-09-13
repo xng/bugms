@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cc.cail.bugms.common.MsConstant;
+import cc.cail.bugms.common.exception.ErrorCode;
+import cc.cail.bugms.common.exception.ServiceException;
 import cc.cail.bugms.dao.entity.Bug;
 import cc.cail.bugms.dao.entity.BugLog;
 import cc.cail.bugms.dao.entity.BugLogExample;
@@ -32,7 +34,7 @@ public class BugServiceImpl implements BugService {
 
 	@Override
 	public List<Map<String, Object>> queryBugsByDeveloperId(Integer developerId) {
-		return bugMapper.listTestersBug(developerId);
+		return bugMapper.listDevBug(developerId);
 	}
 
 	@Override
@@ -58,11 +60,33 @@ public class BugServiceImpl implements BugService {
 	}
 
 	@Override
-	public void updateBug(Bug bug, BugLog bugLog) {
+	public void updateBug(BugLog bugLog) throws ServiceException {
 		logger.info("update log action " + bugLog.toString());
-		bugMapper.updateByPrimaryKeySelective(bug);
+		Bug bug = bugMapper.selectByPrimaryKey(bugLog.getBugId());
+		if (bug == null) {
+			throw new ServiceException(ErrorCode.BUG_NULL_ERRPR);
+		}
+		Bug up = new Bug();
+		up.setId(bug.getId());
+		up.setUpdateId(bugLog.getUpdateId());
+		up.setUpdateTime(new Date());
+		if ("关闭".equals(bugLog.getOperation())) {
+			up.setBugStatus(MsConstant.BUG_STATUS_CLOSE);
+		} else if ("未解决".equals(bugLog.getOperation())) {
+			up.setBugStatus(MsConstant.BUG_STATUS_NEW);
+		} else if ("已修正".equals(bugLog.getOperation())) {
+			up.setBugStatus(MsConstant.BUG_STATUS_DEAL);
+		} else if ("不予处理".equals(bugLog.getOperation())) {
+			up.setBugStatus(MsConstant.BUG_STATUS_DEAL);
+		}
+		bugMapper.updateByPrimaryKeySelective(up);
 		bugLog.setUpdateTime(new Date());
 		bugLogMapper.insert(bugLog);
+	}
+	
+	@Override
+	public List<Map<String, Object>> queryAllBugs() {
+		return bugMapper.queryAllBugs();
 	}
 
 }

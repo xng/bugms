@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cc.cail.bugms.common.AjaxResult;
 import cc.cail.bugms.common.MsConstant;
+import cc.cail.bugms.common.exception.ServiceException;
 import cc.cail.bugms.dao.entity.Bug;
 import cc.cail.bugms.dao.entity.BugLog;
 import cc.cail.bugms.dao.entity.User;
@@ -54,7 +55,11 @@ public class BugController extends BaseController {
 
 	@RequestMapping(value = "/bugs.do", method = RequestMethod.GET)
 	public String bugList(Model m) {
+		User user = (User) SecurityUtils.getSubject().getPrincipal();
 		m.addAttribute("userId", ((User) SecurityUtils.getSubject().getPrincipal()).getId());
+		/* 列出开发人员 */
+		List<User> devs = userService.listRoleUsers(MsConstant.ROLE_DEV);
+		m.addAttribute("devs", devs);
 		return "bugs";
 	}
 
@@ -62,7 +67,13 @@ public class BugController extends BaseController {
 	@ResponseBody
 	public AjaxResult bugListJson() {
 		User user = (User) SecurityUtils.getSubject().getPrincipal();
-		List<Map<String, Object>> buglist = bugService.queryBugsByTesterId(user.getId());
+		List<Map<String, Object>> buglist = null;
+		if (MsConstant.ROLE_DEV.equals(user.getUserRole())) {
+			buglist = bugService.queryBugsByDeveloperId(user.getId());
+		} else if (MsConstant.ROLE_TEST.equals(user.getUserRole())) {
+			buglist = bugService.queryBugsByTesterId(user.getId());
+		}
+
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("rows", buglist);
 		data.put("total", buglist.size());
@@ -83,4 +94,30 @@ public class BugController extends BaseController {
 		data.put("logList", logList);
 		return respWriter.toSuccess(data);
 	}
+
+	@RequestMapping(value = "/op_bug.do", method = RequestMethod.POST)
+	@ResponseBody
+	public AjaxResult opBug(@ModelAttribute("bugLog") BugLog bugLog) {
+		try {
+			bugService.updateBug(bugLog);
+		} catch (ServiceException e) {
+			return respWriter.toError(e.getCode());
+		}
+		return respWriter.toSuccess();
+	}
+	
+	@RequestMapping(value="/bug_count.do",method = RequestMethod.GET)
+	public String bugCount(){
+		return "bug_count";
+	}
+	@RequestMapping(value = "/bug_count_json.do", method = RequestMethod.GET)
+	@ResponseBody
+	public AjaxResult bugCountJson() {
+		List<Map<String, Object>> buglist = bugService.queryAllBugs();
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("rows", buglist);
+		data.put("total", buglist.size());
+		return respWriter.toSuccess(data);
+	}
+	
 }

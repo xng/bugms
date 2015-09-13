@@ -3,6 +3,7 @@ package cc.cail.bugms.service;
 import java.util.List;
 import java.util.Map;
 
+import cc.cail.bugms.common.exception.ServiceException;
 import cc.cail.bugms.dao.entity.Bug;
 import cc.cail.bugms.dao.entity.BugLog;
 /**
@@ -47,7 +48,13 @@ public interface BugService {
 	 * 
 	 * @param bug
 	 * @param action
+	 * @throws ServiceException 
 	 */
-	public void updateBug(Bug bug, BugLog bugLog);
+	public void updateBug(BugLog bugLog) throws ServiceException;
+	/**
+	 * 查询所有bug
+	 * @return
+	 */
+	public List<Map<String, Object>> queryAllBugs();
 
 }
